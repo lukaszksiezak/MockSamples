@@ -15,34 +15,18 @@ namespace HttpContextUnitTestMock.Controllers
     /// </summary>
     public class HomeController : Controller
     {
-        private List<User> InitializeUsersList()
-            {
-            User user1 = new User() { Name = "x", Email = "x" , Company="Apple"};
-            User user2 = new User() { Name = "y", Email = "x" , Company="Microsoft"};
-            User user3 = new User() { Name = "z", Email = "x" , Company="Apple"};
-
-            var list = new List<User>();
-            list.AddMany<User>(user1,user2,user3);
-
-            return list;
-            }
         // GET: Index
         public ActionResult Index()
         {
-            this.Session["usersList"] = InitializeUsersList(); //feed collection with some data.
-
-            DoActionWithTheDataFromSession("usersList");
             return View();
         }
 
-        //The simple task for that method is to modify session's collection and assign all users as Apple's emploees and put it to session again
+        //The simple task for that method is to modify session's collection and assign all given users as Apple's emploees and put it to session again
         public void DoActionWithTheDataFromSession(string sessionIndex)
             {
-            var listOfUsers = this.Session[sessionIndex] as List<User>;
-
+            var listOfUsers = Session[sessionIndex] as List<User>;
             //Fancy looking way of conditional value changing of the property in one line using pure linq
-            listOfUsers = listOfUsers.Where(u => u.Company != "Apple").Select(u => { u.Company = "Apple"; return u; }).ToList();
-
+            listOfUsers = listOfUsers.Select(u => { if (u.Company != "Apple") u.Company = "Apple";  return u; }).ToList();
             this.Session[sessionIndex] = listOfUsers;             
             }
         }
