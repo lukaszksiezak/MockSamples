@@ -16,6 +16,12 @@ namespace EF6_DbContextMocking
             this.storeContext = _context;
         }
 
+        public Product AddNewProduct(string name, string description, float price)
+        {
+            var newProduct = storeContext.Products.Add(new Product() { Name = name, Descrtipiton = description, Price = price });
+            storeContext.SaveChanges();
+            return newProduct;
+        }
         public List<Product> GetProductsHistoryForCustomer (int customerId)
         {
             var listOfShopping = (this.storeContext.Persons.Where(c => c.Id.Equals(customerId)).First().HistoryOfShopping);
