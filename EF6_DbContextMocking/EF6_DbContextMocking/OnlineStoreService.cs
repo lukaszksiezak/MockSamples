@@ -45,7 +45,7 @@ namespace EF6_DbContextMocking
 
         public async Task<List<Product>> GetAllProducts()
         {
-            return await this.storeContext.Products.ToListAsync();
+            return await (this.storeContext.Products).OrderBy(a => a.Price).ToListAsync();
         }
     }
 }
