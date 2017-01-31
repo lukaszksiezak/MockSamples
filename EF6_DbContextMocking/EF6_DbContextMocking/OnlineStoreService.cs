@@ -27,9 +27,9 @@ namespace EF6_DbContextMocking
             var listOfShopping = (this.storeContext.Persons.Where(c => c.Id.Equals(customerId)).First().HistoryOfShopping);
             return listOfShopping;
         }
-        public List<Product> AllShopProductsOrderedByPrice (int shopId)
+        public List<Product> AllShopProductsOrderedByPrice ()
         {
-            var listOfProducts = (this.storeContext.OnlineStore.Where(s => s.Id.Equals(shopId)).First().Products).OrderBy(a=>a.Price).ToList();
+            var listOfProducts = (this.storeContext.Products).OrderBy(a=>a.Price).ToList();
             return listOfProducts;
         }
 
