@@ -6,23 +6,36 @@ using System.Threading.Tasks;
 
 namespace ReferenceArgumentsMock
 {
-    public class DbEntityFactory<T> : IEntityContract<T> where T: class, new()
+    public abstract class DbEntityFactory<T> : IEntityContract<T> where T: class, new()
     {
-        public void CreateEntity(out T entityToName)
+        public void CreateEntity(out T entityToCreate)
         {
-            entityToName = new T();
+            entityToCreate = new T();
         }
+
+        public abstract void ModifyEntity(ref T entityToModify, object attribute);
     }
-    class DbEntitySample 
+    public class DbEntitySample 
     {
-        protected DbEntitySample()
+        public DbEntitySample()
         {
             this.Guid = new Guid();
         }
-        protected virtual Guid Guid { get; set; }      
+        public virtual Guid Guid { get; set; }      
+
+        public string Name { get; set; }
     }
+
     interface IEntityContract<T> where T: class, new()
     {
         void CreateEntity(out T entityToName);
+    }
+
+    public class WestCoastCustoms : DbEntityFactory<DbEntitySample>
+    {
+        public override void ModifyEntity(ref DbEntitySample entityToModify, object attribute)
+        {
+            entityToModify.Name = (string)attribute;
+        }
     }
 }

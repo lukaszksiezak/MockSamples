@@ -9,16 +9,13 @@ using NSubstitute;
 
 namespace ReferenceArgumentsMock.Tests
 {
-    public class DbEntityFake: DbEntitySampleTests
-    {
-        public Guid Guid { get; set; }
-    }
+    public class DbEntityFake: DbEntitySample { }
 
     [TestClass()]
     public class DbEntitySampleTests
     {
         [TestMethod()]
-        public void CreateEntityAndAssignNameTest()
+        public void CreateEntityTest()
         {
             //Arrange
             var mockEntityFactory = Substitute.For<DbEntityFactory<DbEntityFake>>();
@@ -28,6 +25,20 @@ namespace ReferenceArgumentsMock.Tests
             //Assert
             Assert.IsNotNull(fakeEntity);
             Assert.IsNotNull(fakeEntity.Guid);
+        }
+        [TestMethod()]
+        public void ModifyEntityTest()
+        {
+            //Arrange
+            var mockEntityFactory = new WestCoastCustoms();
+            DbEntitySample fakeEntity = new DbEntitySample();
+
+            //Act
+            Assert.IsNull(fakeEntity.Name);
+            mockEntityFactory.ModifyEntity(ref fakeEntity, "someName");
+            //Assert
+            Assert.IsTrue(fakeEntity.Name.Equals("someName"));
+
         }
     }
 }
